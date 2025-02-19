@@ -15,7 +15,7 @@ class ASRModel(ABC):
         raise NotImplementedError("transcribe_wav method called from abstract class!")
 
     @abstractmethod
-    def move_to_device(self, device: str | device):
+    def move_to_device(self, device: str | device) -> None:
         raise NotImplementedError("move_to_device method called from abstract class!")
     
     @abstractmethod
