@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from .asr_model import ASRModel
 
 from transformers import SeamlessM4TProcessor, SeamlessM4TModel, SeamlessM4Tv2Model
@@ -42,7 +43,7 @@ class SeamlessM4T(ASRModel):
         return self.transcribe_wav(audio, orig_freq)
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
         wav = prepare_audio(wav, sample_rate)
 
         audio_inputs = self.__processor(audios=wav, sampling_rate=16_000, return_tensors="pt")

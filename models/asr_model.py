@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 from torch import Tensor, device
 from numpy import ndarray
 
@@ -11,7 +12,7 @@ class ASRModel(ABC):
         raise NotImplementedError("transcribe_file method called from abstract class!")
 
     @abstractmethod
-    def transcribe_wav(self, wav: Tensor | ndarray | list | tuple, sample_rate: int) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int) -> str:
         raise NotImplementedError("transcribe_wav method called from abstract class!")
 
     @abstractmethod

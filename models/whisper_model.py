@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from numpy import ndarray
 from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
@@ -39,7 +40,7 @@ class WhisperModel(ASRModel):
         return transcription
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
         wav = prepare_audio(wav, sample_rate)
 
         if wav.device != self.__model.device:

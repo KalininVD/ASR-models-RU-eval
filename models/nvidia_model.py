@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 import nemo.utils
 nemo.utils.logging.setLevel('CRITICAL')
 
@@ -65,7 +66,7 @@ class NvidiaModel(ASRModel):
         return transcription
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
         wav = prepare_audio(wav, sample_rate)
 
         result = self.__model.transcribe(wav, verbose=False)
