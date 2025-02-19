@@ -11,7 +11,12 @@ from .utils.prepare_audio import prepare_audio
 
 
 NVIDIA_MODELS_MAP = {
-    "NVIDIA Conformer-CTC Large (Russian)": (
+    "NVIDIA STT Multilingual FastConformer Hybrid Transducer-CTC Large P&C": (
+        "stt_multilingual_fastconformer_hybrid_large_pc",
+        EncDecHybridRNNTCTCBPEModel,
+    ),
+
+    "NVIDIA STT Ru Conformer-CTC Large": (
         "nvidia/stt_ru_conformer_ctc_large",
         EncDecCTCModelBPE,
     ),
