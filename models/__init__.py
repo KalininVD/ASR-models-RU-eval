@@ -1,3 +1,7 @@
+from warnings import filterwarnings
+filterwarnings("ignore", category=UserWarning)
+filterwarnings("ignore", category=FutureWarning)
+
 from .asr_model import ASRModel
 
 from .seamless_model import SeamlessM4T, SEAMLESS_MODELS_MAP

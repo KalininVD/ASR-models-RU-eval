@@ -1,7 +1,3 @@
-from warnings import filterwarnings
-filterwarnings("ignore", category=UserWarning)
-filterwarnings("ignore", category=FutureWarning)
-
 from collections.abc import Iterable
 from numpy import ndarray
 from torch import Tensor, device
