@@ -1,0 +1,1 @@
+BASE_SAMPLE_RATE: int = 16_000
