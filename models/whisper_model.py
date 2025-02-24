@@ -4,8 +4,9 @@ from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from whisper import load_model, transcribe
 
-from .asr_model import ASRModel
+from .utils.constants import BASE_SAMPLE_RATE
 from .utils.prepare_audio import prepare_audio
+from .asr_model import ASRModel
 
 
 WHISPER_MODELS_MAP = {
@@ -40,7 +41,7 @@ class WhisperModel(ASRModel):
         return transcription
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
         if wav.device != self.__model.device:

@@ -1,12 +1,13 @@
 from collections.abc import Iterable
-from .asr_model import ASRModel
-
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from numpy import ndarray
 from torch import Tensor, device, no_grad as torch_no_grad, argmax as torch_argmax
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from torchaudio import load as load_audio
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
+
+from .utils.constants import BASE_SAMPLE_RATE
 from .utils.prepare_audio import prepare_audio
+from .asr_model import ASRModel
 
 
 MMS_MODELS_MAP = {
@@ -43,10 +44,10 @@ class MMSModel(ASRModel):
         return self.transcribe_wav(audio, orig_freq)
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
-        inputs = self.__processor(wav, sampling_rate=16_000, return_tensors="pt")
+        inputs = self.__processor(wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt")
         inputs = inputs.to(self.__model.device)
 
         with torch_no_grad():

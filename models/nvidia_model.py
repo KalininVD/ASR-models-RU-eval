@@ -1,14 +1,15 @@
-from collections.abc import Iterable
 import nemo.utils
 nemo.utils.logging.setLevel('CRITICAL')
 
+from collections.abc import Iterable
 from numpy import ndarray
 from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from nemo.collections.asr.models import EncDecCTCModelBPE, EncDecHybridRNNTCTCBPEModel, ASRModel as NeMoASRModel
 
-from .asr_model import ASRModel
+from .utils.constants import BASE_SAMPLE_RATE
 from .utils.prepare_audio import prepare_audio
+from .asr_model import ASRModel
 
 
 NVIDIA_MODELS_MAP = {
@@ -66,7 +67,7 @@ class NvidiaModel(ASRModel):
         return transcription
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
         result = self.__model.transcribe(wav, verbose=False)

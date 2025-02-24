@@ -1,12 +1,13 @@
 from collections.abc import Iterable
-from .asr_model import ASRModel
-
-from transformers import SeamlessM4TProcessor, SeamlessM4TModel, SeamlessM4Tv2Model
 from numpy import ndarray
 from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from torchaudio import load as load_audio
+from transformers import SeamlessM4TProcessor, SeamlessM4TModel, SeamlessM4Tv2Model
+
+from .utils.constants import BASE_SAMPLE_RATE
 from .utils.prepare_audio import prepare_audio
+from .asr_model import ASRModel
 
 
 SEAMLESS_MODELS_MAP = {
@@ -43,10 +44,10 @@ class SeamlessM4T(ASRModel):
         return self.transcribe_wav(audio, orig_freq)
 
 
-    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> str:
+    def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
-        audio_inputs = self.__processor(audios=wav, sampling_rate=16_000, return_tensors="pt")
+        audio_inputs = self.__processor(audios=wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt")
         audio_inputs = audio_inputs.to(self.__model.device)
 
         output_tokens = self.__model.generate(**audio_inputs, tgt_lang="rus", generate_speech=False)

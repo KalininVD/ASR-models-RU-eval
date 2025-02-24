@@ -3,7 +3,6 @@ filterwarnings("ignore", category=UserWarning)
 filterwarnings("ignore", category=FutureWarning)
 
 from .asr_model import ASRModel
-
 from .seamless_model import SeamlessM4T, SEAMLESS_MODELS_MAP
 from .mms_model import MMSModel, MMS_MODELS_MAP
 from .whisper_model import WhisperModel, WHISPER_MODELS_MAP
@@ -42,7 +41,7 @@ def construct_asr_model(model_name: str) -> ASRModel:
 
     raise ValueError(
         f"Invalid model name: {model_name}.\n"
-        "Choose another model! You can use `get_supported_models()` method to get a list of supported models."
+        "Choose another model! You can use `get_supported_models()` method to get the list of supported models."
     )
 
 

@@ -1,11 +1,12 @@
 from collections.abc import Iterable
-
 from numpy import asarray, ndarray
 from torch import Tensor, from_numpy, float32, mean
 from torchaudio.functional import resample
 
+from .constants import BASE_SAMPLE_RATE
 
-def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = 16_000) -> Tensor:
+
+def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> Tensor:
     if not isinstance(audio, Tensor):
         if not isinstance(audio, ndarray):
             try:
@@ -26,7 +27,7 @@ def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = 16_000)
     if audio.ndim != 1:
         audio = mean(audio, dim=0)
 
-    audio = resample(audio, orig_freq=sample_rate, new_freq=16_000)
+    audio = resample(audio, orig_freq=sample_rate, new_freq=BASE_SAMPLE_RATE)
 
     if audio.dtype != float32:
         audio = audio.to(dtype=float32)
