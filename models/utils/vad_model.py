@@ -3,8 +3,8 @@ from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from numpy import ndarray
 
-from constants import BASE_SAMPLE_RATE
-from prepare_audio import prepare_audio
+from .constants import BASE_SAMPLE_RATE
+from .prepare_audio import prepare_audio
 
 
 class VADModel:
