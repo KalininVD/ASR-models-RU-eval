@@ -1,4 +1,4 @@
-from datasets import Dataset, IterableDataset, Audio
+from datasets import Dataset, Audio
 from evaluate import Metric, load as load_metric
 from tqdm.notebook import tqdm
 from torch import device
@@ -26,7 +26,7 @@ class ASRModelEvaluator:
         return self.__vad_model
 
 
-    def _prepare_dataset(self, data: Dataset | IterableDataset, use_device: str | device = "cpu") -> Dataset | IterableDataset:
+    def _prepare_dataset(self, data: Dataset, use_device: str | device = "cpu") -> Dataset:
         data = data.cast_column("audio", Audio(sampling_rate=BASE_SAMPLE_RATE))
 
         def split_audio_to_segments(sample: dict) -> dict:
@@ -51,6 +51,7 @@ class ASRModelEvaluator:
 
         return data.map(
             function=split_audio_to_segments,
+            desc="Splitting each audio in the dataset to speech segments",
         )
 
 
@@ -58,7 +59,7 @@ class ASRModelEvaluator:
             self,
             metric: SUPPORTED_METRICS,
             model: ASRModel | str,
-            data: Dataset | IterableDataset,
+            data: Dataset,
             use_text_normalization: bool = True,
             use_device: str | device = "cpu",
             verbose: bool = False,
@@ -113,7 +114,7 @@ class ASRModelEvaluator:
             self,
             metric: SUPPORTED_METRICS,
             models: ASRModel | str | list[ASRModel] | list[str],
-            data: Dataset | IterableDataset,
+            data: Dataset,
             use_text_normalization: bool = True,
             use_device: str | device = "cpu",
             verbose: bool = False,
