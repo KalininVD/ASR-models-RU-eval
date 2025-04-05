@@ -7,6 +7,11 @@ from .constants import BASE_SAMPLE_RATE
 
 
 def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> Tensor:
+    """
+    Prepares audio for ASR model inference.
+    Converts audio to float32 PyTorch tensor, resamples it to the base sample rate, and normalizes it if needed.
+    """
+
     if not isinstance(audio, Tensor):
         if not isinstance(audio, ndarray):
             try:
