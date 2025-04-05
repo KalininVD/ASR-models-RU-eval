@@ -13,8 +13,9 @@ from models.utils.vad_model import VADModel
 
 
 class ASRModelEvaluator:
-    def __init__(self):
+    def __init__(self, *_, metric: SUPPORTED_METRICS):
         self.__vad_model: VADModel | None = None
+        self.__metric: Metric = load_metric(metric)
 
 
     def _get_vad_model(self, device: str | device = "cpu") -> VADModel:
@@ -57,15 +58,12 @@ class ASRModelEvaluator:
 
     def evaluate_model(
             self,
-            metric: SUPPORTED_METRICS,
             model: ASRModel | str,
             data: Dataset,
             use_text_normalization: bool = True,
             use_device: str | device = "cpu",
             verbose: bool = False,
         ) -> float:
-
-        loaded_metric: Metric = load_metric(metric)
 
         if "audio_segments" not in data.column_names:
             data = self._prepare_dataset(data, use_device=use_device)
@@ -103,16 +101,15 @@ class ASRModelEvaluator:
             predicted_transcriptions = list(map(normalize_text, predicted_transcriptions))
             reference_transcriptions = list(map(normalize_text, reference_transcriptions))
 
-        result = loaded_metric.compute(predictions=predicted_transcriptions, references=reference_transcriptions)
+        result = self.__metric.compute(predictions=predicted_transcriptions, references=reference_transcriptions)
 
-        assert isinstance(result, float), f"Metric computation result is not a float! Used metric is {metric}, got result {result} of type {type(result)}"
+        assert isinstance(result, float), f"Metric computation result is not a float! Used metric is {self.__metric.name}, got result {result} of type {type(result)}"
 
         return result
 
 
     def evaluate(
             self,
-            metric: SUPPORTED_METRICS,
             models: ASRModel | str | list[ASRModel] | list[str],
             data: Dataset,
             use_text_normalization: bool = True,
@@ -134,11 +131,11 @@ class ASRModelEvaluator:
                 print(f"Evaluating {model.name if isinstance(model, ASRModel) else model}")
 
             value = self.evaluate_model(
-                metric, model, data, use_text_normalization, use_device, verbose
+                model, data, use_text_normalization, use_device, verbose
             )
 
             if verbose:
-                print(f"{metric} = {value}")
+                print(f"{self.__metric.name} = {value}")
 
             result.append(value)
 
