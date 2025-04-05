@@ -47,8 +47,9 @@ class SeamlessM4T(ASRModel):
     def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
-        audio_inputs = self.__processor(audios=wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt")
-        audio_inputs = audio_inputs.to(self.__model.device)
+        audio_inputs = self.__processor(
+            audios=wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt"
+        ).to(self.__model.device)
 
         output_tokens = self.__model.generate(**audio_inputs, tgt_lang="rus", generate_speech=False)
 

@@ -47,8 +47,9 @@ class MMSModel(ASRModel):
     def transcribe_wav(self, wav: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> str:
         wav = prepare_audio(wav, sample_rate)
 
-        inputs = self.__processor(wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt")
-        inputs = inputs.to(self.__model.device)
+        inputs = self.__processor(
+            wav, sampling_rate=BASE_SAMPLE_RATE, return_tensors="pt"
+        ).to(self.__model.device)
 
         with torch_no_grad():
             outputs = self.__model(**inputs).logits

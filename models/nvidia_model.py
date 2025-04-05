@@ -1,5 +1,5 @@
 import nemo.utils
-nemo.utils.logging.setLevel('CRITICAL')
+nemo.utils.logging.setLevel('CRITICAL') # Remove annoying NeMo logging
 
 from collections.abc import Iterable
 from numpy import ndarray
