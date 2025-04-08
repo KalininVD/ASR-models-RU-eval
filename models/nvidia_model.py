@@ -6,6 +6,7 @@ from numpy import ndarray
 from torch import Tensor, device
 from torch.cuda import is_available as is_cuda_available, empty_cache as clear_cuda_cache
 from nemo.collections.asr.models import EncDecCTCModelBPE, EncDecHybridRNNTCTCBPEModel, ASRModel as NeMoASRModel
+from nemo.collections.asr.parts.utils.rnnt_utils import Hypothesis
 
 from .utils.constants import BASE_SAMPLE_RATE
 from .utils.prepare_audio import prepare_audio
@@ -81,6 +82,8 @@ class NvidiaModel(ASRModel):
             result = result[0]
         if isinstance(result, (tuple, list)):
             result = result[0]
+        if isinstance(result, Hypothesis):
+            result = result.text
 
         transcription = result
 
