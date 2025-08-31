@@ -1,8 +1,14 @@
 # GigaAM: the family of open-source acoustic models for speech processing
 
+> [!Note]
+> This repository is an upgraded version of the original [GigaAM repository](https://github.com/salute-developers/GigaAM.git) with new features, including:
+> - Local SileroVAD support for long-form audio transcription as an alternative to the PyAnnote pipeline
+> - Support for using Numpy arrays and PyTorch tensors as input audio data, providing an additional parameter `sample_rate` for performing audio resampling if necessary when using these input types instead of file paths
+
 ![plot](./gigaam_scheme.svg)
 
 ## Latest News
+* 2025/06 — Our [research paper on GigaAM](https://arxiv.org/abs/2506.01192) was accepted to InterSpeech 2025!
 * 2024/12 — [MIT License](./LICENSE), GigaAM-v2 (**-15%** and **-12%** WER Reduction for CTC and RNN-T models, respectively), [ONNX export support](#onnx-inference-example)
 * 2024/05 — GigaAM-RNNT (**-19%** WER Reduction), [long-form inference using external Voice Activity Detection](#long-form-audio-transcribation)
 * 2024/04 — GigaAM Release: GigaAM-CTC ([SoTA Speech Recognition model for the Russian language](#performance-metrics-word-error-rate)), [GigaAM-Emo](#gigaam-emo-emotion-recognition)
@@ -44,7 +50,7 @@ This repository includes:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/salute-developers/GigaAM.git
+   git clone https://github.com/KalininVD/GigaAM-upgraded.git GigaAM
    cd GigaAM
    ```
 
@@ -211,6 +217,7 @@ GigaAM's code and model weights are released under the [MIT License](./LICENSE).
 ---
 
 ## Links
+* [[arxiv] GigaAM: Efficient Self-Supervised Learner for Speech Recognition](https://arxiv.org/abs/2506.01192)
 * [[habr] GigaAM: класс открытых моделей для обработки звучащей речи](https://habr.com/ru/companies/sberdevices/articles/805569)
 * [[youtube] Как научить LLM слышать: GigaAM 🤝 GigaChat Audio](https://www.youtube.com/watch?v=O7NSH2SAwRc)
 * [[youtube] GigaAM: Семейство акустических моделей для русского языка](https://youtu.be/PvZuTUnZa2Q?t=26442)
