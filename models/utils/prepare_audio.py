@@ -1,15 +1,16 @@
 from collections.abc import Iterable
 from numpy import asarray, ndarray
-from torch import Tensor, from_numpy, float32, mean
+from torch import Tensor, from_numpy, int32, float32, log, mean
 from torchaudio.functional import resample
 
 from .constants import BASE_SAMPLE_RATE
 
 
-def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE) -> Tensor:
+def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = BASE_SAMPLE_RATE,
+                  out_dtype=float32, out_sample_rate=BASE_SAMPLE_RATE) -> Tensor:
     """
     Prepares audio for ASR model inference.
-    Converts audio to float32 PyTorch tensor, resamples it to the base sample rate, and normalizes it if needed.
+    Converts audio to int32 or float32 PyTorch tensor, resamples it to the desired sample rate, and normalizes it if needed.
     """
 
     if not isinstance(audio, Tensor):
@@ -26,15 +27,30 @@ def prepare_audio(audio: Tensor | ndarray | Iterable, sample_rate: int = BASE_SA
 
         audio = from_numpy(audio)
 
-    if not audio.dtype.is_floating_point and audio.abs().max() > 1:
-        audio = audio.float() / 32768.0
+    assert out_dtype in (int32, float32), "Only int32 and float32 are supported as output Tensor's DType"
+
+    audio = audio.to(float32)
 
     if audio.ndim != 1:
         audio = mean(audio, dim=0)
 
-    audio = resample(audio, orig_freq=sample_rate, new_freq=BASE_SAMPLE_RATE)
+    audio = resample(audio, orig_freq=sample_rate, new_freq=out_sample_rate)
 
-    if audio.dtype != float32:
-        audio = audio.to(dtype=float32)
+    if out_dtype == int32:
+        if log(audio.abs().max()).item() * 2 < log(Tensor([1, 32768])).sum().item():
+            audio = audio * 32768.0
+
+        audio = audio.to(int32)
+
+        audio[audio <= -32769] = -32768
+        audio[audio >= 32768] = 32767
+    else:
+        if log(audio.abs().max()).item() * 2 > log(Tensor([1, 32768])).sum().item():
+            audio = audio / 32768.0
+
+        audio = audio.to(float32)
+
+        audio[audio <= -1.0] = 1.0
+        audio[audio >= 1.0] = 1.0
 
     return audio
