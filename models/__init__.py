@@ -9,6 +9,7 @@ from .mms_model import MMSModel, MMS_MODELS_MAP
 from .whisper_model import WhisperModel, WHISPER_MODELS_MAP
 from .nvidia_model import NvidiaModel, NVIDIA_MODELS_MAP
 from .gigaam_model import GigaAM, GIGAAM_MODELS_MAP
+from .tone_model import TOne
 
 
 ALL_ASR_MODELS = [
@@ -17,6 +18,7 @@ ALL_ASR_MODELS = [
     *list(WHISPER_MODELS_MAP.keys()),
     *list(NVIDIA_MODELS_MAP.keys()),
     *list(GIGAAM_MODELS_MAP.keys()),
+    "T-One",
 ]
 
 
@@ -39,6 +41,9 @@ def construct_asr_model(model_name: str) -> ASRModel:
 
     if model_name in GIGAAM_MODELS_MAP:
         return GigaAM(model_name)
+    
+    if model_name == "T-One":
+        return TOne("T-One")
 
     raise ValueError(
         f"Invalid model name: {model_name}.\n"
