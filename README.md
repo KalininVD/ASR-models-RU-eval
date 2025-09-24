@@ -19,7 +19,7 @@ The repository includes scripts for the core steps of the evaluation process:
   - NVIDIA NeMo models (only supporting Russian language)
   - T-One (check the [original repo](https://github.com/voicekit-team/T-one))
 
-The result is presented as a **bar chart** comparing the **Word Error Rate (WER)** on the test set of the dataset for each model at the end of the **evaluation** notebook. The example chart is shown below:
+The result is presented as a **bar chart** comparing the **Word Error Rate (WER)** on the test set of the dataset for each model at the end of the **evaluation** notebook. The example chart for test set of RU split of MCV17.0 is shown below:
 ![Example WER Comparison Chart](./example_wer_chart.png)
 
 > [!Warning]
