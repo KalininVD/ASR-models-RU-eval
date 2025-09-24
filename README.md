@@ -23,9 +23,6 @@ The result is presented as a **bar chart** comparing the **Word Error Rate (WER)
 ![Example WER Comparison Chart](./example_wer_chart.png)
 
 > [!Warning]
-> The dataset used for evaluation is not included in this repository due to its size and privacy considerations.
-
-> [!Note]
 > The evaluation was performed on a machine with an NVIDIA RTX 4090 GPU, which has 24GB of VRAM. Some models may require more or less VRAM and might not run on different hardware configurations. Also the Python environment was set up using `conda` and `pip` and may not be reproducible as library versions may have changed since the time of writing (May 2025).
 
 > [!Note]
