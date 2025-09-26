@@ -20,10 +20,11 @@ The repository includes scripts for the core steps of the evaluation process:
   - T-One (check the [original repo](https://github.com/voicekit-team/T-one))
 
 The result is presented as a **bar chart** comparing the **Word Error Rate (WER)** on the test set of the dataset for each model at the end of the **evaluation** notebook. The example chart for test set of RU split of MCV17.0 is shown below:
-![Example WER Comparison Chart](./example_wer_chart.png)
+
+![Example WER Comparison Chart](./mcv17_wer_chart.png)
 
 > [!Warning]
-> The evaluation was performed on a machine with an NVIDIA RTX 4090 GPU, which has 24GB of VRAM. Some models may require more or less VRAM and might not run on different hardware configurations. Also the Python environment was set up using `conda` and `pip` and may not be reproducible as library versions may have changed since the time of writing (May 2025).
+> The evaluation was performed on a machine with an NVIDIA RTX 4090 GPU, which has 24GB of VRAM. Some models may require more or less VRAM and might not run on different hardware configurations. Also the Python environment was set up using `conda` and `pip` and may not be reproducible as library versions may have changed since the time of writing (September 2025).
 
 > [!Note]
 > For better usage of GigaAM models, a slightly modified version of the [GigaAM repository](https://github.com/salute-developers/GigaAM) was used for the current repo: [GigaAM-upgraded repository](https://github.com/KalininVD/GigaAM-upgraded). It includes some bug fixes and improvements for better evaluation pipeline integration. See the [README](https://github.com/KalininVD/GigaAM-upgraded/blob/main/README.md) of that repository for details.
